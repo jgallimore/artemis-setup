@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomee>
+  <!-- see http://tomee.apache.org/containers-and-resources.html -->
+
+  <!-- activate next line to be able to deploy applications in apps -->
+  <!-- <Deployments dir="apps" /> -->
+  <Deployments dir="apps" />
+
+        <Container
+                id="container/mdb"
+                type="MESSAGE">
+                ResourceAdapter = ra/activemq
+                ActivationSpecClass = org.apache.activemq.artemis.ra.inflow.ActiveMQActivationSpec
+                InstanceLimit=20
+        </Container>
+        <Resource
+                id="ra/activemq"
+                type="ArtemisMQResourceAdapter">
+                connectionParameters=host=localhost;port=61616
+                connectorClassName=org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory
+        </Resource>
+        <Resource
+                id="jms/connectionFactory"
+                type="javax.jms.ConnectionFactory">
+                ResourceAdapter = ra/activemq
+        </Resource>
+        <Resource
+                id="test"
+                type="javax.jms.Topic">
+                ResourceAdapter = ra/activemq
+                name=test
+        </Resource>
+</tomee>
